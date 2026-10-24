@@ -102,8 +102,12 @@ pub fn init() -> OptionalPeripherals {
 
     enable_flash_cache();
 
-    OptionalPeripherals::from(peripherals)
+    let mut peripherals = OptionalPeripherals::from(peripherals);
+    init_gpio_outputs(&mut peripherals);
+    peripherals
 }
+
+include!(concat!(env!("OUT_DIR"), "/gpio_outputs.rs"));
 
 fn board_config(config: &mut Config) {
     config.rcc = rcc::config();

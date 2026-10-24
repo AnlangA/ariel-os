@@ -4,6 +4,9 @@ targets:
     chip: stm32h7r7l8
     ariel:
       swi: WWDG
+      global_env:
+        # Both channels off before application startup: red low, blue high.
+        CONFIG_GPIO_OUTPUTS: PO1:low,PO5:high
     leds:
       - pin: PO1
         aliases:

@@ -224,6 +224,7 @@ builders:
   env:
     CARGO_ENV:
     - CONFIG_SWI=WWDG
+    CONFIG_GPIO_OUTPUTS: PO1:low,PO5:high
 - name: seeedstudio-lora-e5-mini
   parent: stm32wle5jc
   provides:

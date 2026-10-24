@@ -27,6 +27,49 @@ fn main() {
 
     peripheral_cfg_from_metapac();
     exti_irq_bindings_from_metapac();
+    gpio_outputs_from_env();
+}
+
+// Configure initial board outputs without taking pins away from applications.
+fn gpio_outputs_from_env() {
+    use std::fmt::Write as _;
+
+    println!("cargo::rerun-if-env-changed=CONFIG_GPIO_OUTPUTS");
+    let config = env::var("CONFIG_GPIO_OUTPUTS").unwrap_or_default();
+    let mut code = String::from("fn init_gpio_outputs(_peripherals: &mut OptionalPeripherals) {\n");
+    let mut seen = std::collections::HashSet::new();
+
+    for entry in config.split(',').filter(|entry| !entry.is_empty()) {
+        let (pin, level) = entry
+            .split_once(':')
+            .expect("CONFIG_GPIO_OUTPUTS requires PIN:low or PIN:high entries");
+        let pin_bytes = pin.as_bytes();
+        assert!(
+            (3..=4).contains(&pin_bytes.len())
+                && pin_bytes[0] == b'P'
+                && pin_bytes[1].is_ascii_uppercase()
+                && pin_bytes[2..].iter().all(u8::is_ascii_digit)
+                && pin[2..].parse::<u8>().is_ok_and(|number| number < 16),
+            "invalid GPIO pin in CONFIG_GPIO_OUTPUTS: {pin}"
+        );
+        assert!(seen.insert(pin), "duplicate GPIO pin: {pin}");
+        let level = match level {
+            "low" => "Low",
+            "high" => "High",
+            _ => panic!("invalid GPIO level in CONFIG_GPIO_OUTPUTS: {level}"),
+        };
+        writeln!(
+            code,
+            "{{ let output = embassy_stm32::gpio::Output::new(\n\
+             _peripherals.{pin}.as_mut().unwrap().reborrow(),\n\
+             embassy_stm32::gpio::Level::{level}, embassy_stm32::gpio::Speed::Low);\n\
+             core::mem::forget(output); }}"
+        )
+        .unwrap();
+    }
+    code.push_str("}\n");
+    let out_dir = env::var_os("OUT_DIR").unwrap();
+    fs::write(Path::new(&out_dir).join("gpio_outputs.rs"), code).expect("write failed");
 }
 
 /// Generates `for_each_exti_interrupt!()` with all EXTI interrupt vectors of the selected chip, so
