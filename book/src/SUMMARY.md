@@ -48,7 +48,7 @@
   - [ST NUCLEO-F401RE](./boards/st-nucleo-f401re.md)
   - [ST NUCLEO-F411RE](./boards/st-nucleo-f411re.md)
   - [ST NUCLEO-G431RB](./boards/st-nucleo-g431rb.md)
-  - [RT-Thread ART-Pi2](./boards/rt-thread-art-pi2.md)
+  - [ART-Pi2](./boards/art-pi2.md)
   - [ST NUCLEO-H753ZI](./boards/st-nucleo-h753zi.md)
   - [ST NUCLEO-H755ZI-Q](./boards/st-nucleo-h755zi-q.md)
   - [ST NUCLEO-WB55RG](./boards/st-nucleo-wb55rg.md)

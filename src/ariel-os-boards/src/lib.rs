@@ -6,10 +6,11 @@ cfg_if::cfg_if! {
     include!("adafruit-feather-nrf52840-express.rs"); } else if #[cfg(context =
     "adafruit-feather-nrf52840-sense")] { include!("adafruit-feather-nrf52840-sense.rs");
     } else if #[cfg(context = "arduino-uno-q")] { include!("arduino-uno-q.rs"); } else if
-    #[cfg(context = "bbc-microbit-v1")] { include!("bbc-microbit-v1.rs"); } else if
-    #[cfg(context = "bbc-microbit-v2")] { include!("bbc-microbit-v2.rs"); } else if
-    #[cfg(context = "decawave-dwm1001-dev")] { include!("decawave-dwm1001-dev.rs"); }
-    else if #[cfg(context = "dfrobot-firebeetle2-esp32-c6")] {
+    #[cfg(context = "art-pi2")] { include!("art-pi2.rs"); } else if #[cfg(context =
+    "bbc-microbit-v1")] { include!("bbc-microbit-v1.rs"); } else if #[cfg(context =
+    "bbc-microbit-v2")] { include!("bbc-microbit-v2.rs"); } else if #[cfg(context =
+    "decawave-dwm1001-dev")] { include!("decawave-dwm1001-dev.rs"); } else if
+    #[cfg(context = "dfrobot-firebeetle2-esp32-c6")] {
     include!("dfrobot-firebeetle2-esp32-c6.rs"); } else if #[cfg(context =
     "espressif-esp32-c3-devkit-rust-1")] {
     include!("espressif-esp32-c3-devkit-rust-1.rs"); } else if #[cfg(context =
@@ -46,33 +47,31 @@ cfg_if::cfg_if! {
     include!("rpi-pico-w.rs"); } else if #[cfg(context = "rpi-pico")] {
     include!("rpi-pico.rs"); } else if #[cfg(context = "rpi-pico2-w")] {
     include!("rpi-pico2-w.rs"); } else if #[cfg(context = "rpi-pico2")] {
-    include!("rpi-pico2.rs"); } else if #[cfg(context = "rt-thread-art-pi2")] {
-    include!("rt-thread-art-pi2.rs"); } else if #[cfg(context =
-    "seeedstudio-lora-e5-mini")] { include!("seeedstudio-lora-e5-mini.rs"); } else if
-    #[cfg(context = "seeedstudio-xiao-esp32-s3")] {
-    include!("seeedstudio-xiao-esp32-s3.rs"); } else if #[cfg(context =
-    "seeedstudio-xiao-esp32c6")] { include!("seeedstudio-xiao-esp32c6.rs"); } else if
-    #[cfg(context = "seeedstudio-xiao-nrf52840-plus")] {
-    include!("seeedstudio-xiao-nrf52840-plus.rs"); } else if #[cfg(context =
-    "st-b-l072z-lrwan1")] { include!("st-b-l072z-lrwan1.rs"); } else if #[cfg(context =
-    "st-b-l475e-iot01a")] { include!("st-b-l475e-iot01a.rs"); } else if #[cfg(context =
-    "st-nucleo-c031c6")] { include!("st-nucleo-c031c6.rs"); } else if #[cfg(context =
-    "st-nucleo-f042k6")] { include!("st-nucleo-f042k6.rs"); } else if #[cfg(context =
-    "st-nucleo-f303re")] { include!("st-nucleo-f303re.rs"); } else if #[cfg(context =
-    "st-nucleo-f401re")] { include!("st-nucleo-f401re.rs"); } else if #[cfg(context =
-    "st-nucleo-f411re")] { include!("st-nucleo-f411re.rs"); } else if #[cfg(context =
-    "st-nucleo-f767zi")] { include!("st-nucleo-f767zi.rs"); } else if #[cfg(context =
-    "st-nucleo-g431rb")] { include!("st-nucleo-g431rb.rs"); } else if #[cfg(context =
-    "st-nucleo-h753zi")] { include!("st-nucleo-h753zi.rs"); } else if #[cfg(context =
-    "st-nucleo-h755zi-q")] { include!("st-nucleo-h755zi-q.rs"); } else if #[cfg(context =
-    "st-nucleo-wb55")] { include!("st-nucleo-wb55.rs"); } else if #[cfg(context =
-    "st-nucleo-wba55")] { include!("st-nucleo-wba55.rs"); } else if #[cfg(context =
-    "st-nucleo-wba65ri")] { include!("st-nucleo-wba65ri.rs"); } else if #[cfg(context =
-    "st-steval-mkboxpro")] { include!("st-steval-mkboxpro.rs"); } else if #[cfg(context =
-    "stm32u083c-dk")] { include!("stm32u083c-dk.rs"); } else if #[cfg(context =
-    "ulanzi-tc001")] { include!("ulanzi-tc001.rs"); } else if #[cfg(context =
-    "unihiker-k10")] { include!("unihiker-k10.rs"); } else if #[cfg(context =
-    "waveshare-esp32-s3-eth")] { include!("waveshare-esp32-s3-eth.rs"); } else if
-    #[cfg(context = "waveshare-esp32-s3-matrix")] {
+    include!("rpi-pico2.rs"); } else if #[cfg(context = "seeedstudio-lora-e5-mini")] {
+    include!("seeedstudio-lora-e5-mini.rs"); } else if #[cfg(context =
+    "seeedstudio-xiao-esp32-s3")] { include!("seeedstudio-xiao-esp32-s3.rs"); } else if
+    #[cfg(context = "seeedstudio-xiao-esp32c6")] {
+    include!("seeedstudio-xiao-esp32c6.rs"); } else if #[cfg(context =
+    "seeedstudio-xiao-nrf52840-plus")] { include!("seeedstudio-xiao-nrf52840-plus.rs"); }
+    else if #[cfg(context = "st-b-l072z-lrwan1")] { include!("st-b-l072z-lrwan1.rs"); }
+    else if #[cfg(context = "st-b-l475e-iot01a")] { include!("st-b-l475e-iot01a.rs"); }
+    else if #[cfg(context = "st-nucleo-c031c6")] { include!("st-nucleo-c031c6.rs"); }
+    else if #[cfg(context = "st-nucleo-f042k6")] { include!("st-nucleo-f042k6.rs"); }
+    else if #[cfg(context = "st-nucleo-f303re")] { include!("st-nucleo-f303re.rs"); }
+    else if #[cfg(context = "st-nucleo-f401re")] { include!("st-nucleo-f401re.rs"); }
+    else if #[cfg(context = "st-nucleo-f411re")] { include!("st-nucleo-f411re.rs"); }
+    else if #[cfg(context = "st-nucleo-f767zi")] { include!("st-nucleo-f767zi.rs"); }
+    else if #[cfg(context = "st-nucleo-g431rb")] { include!("st-nucleo-g431rb.rs"); }
+    else if #[cfg(context = "st-nucleo-h753zi")] { include!("st-nucleo-h753zi.rs"); }
+    else if #[cfg(context = "st-nucleo-h755zi-q")] { include!("st-nucleo-h755zi-q.rs"); }
+    else if #[cfg(context = "st-nucleo-wb55")] { include!("st-nucleo-wb55.rs"); } else if
+    #[cfg(context = "st-nucleo-wba55")] { include!("st-nucleo-wba55.rs"); } else if
+    #[cfg(context = "st-nucleo-wba65ri")] { include!("st-nucleo-wba65ri.rs"); } else if
+    #[cfg(context = "st-steval-mkboxpro")] { include!("st-steval-mkboxpro.rs"); } else if
+    #[cfg(context = "stm32u083c-dk")] { include!("stm32u083c-dk.rs"); } else if
+    #[cfg(context = "ulanzi-tc001")] { include!("ulanzi-tc001.rs"); } else if
+    #[cfg(context = "unihiker-k10")] { include!("unihiker-k10.rs"); } else if
+    #[cfg(context = "waveshare-esp32-s3-eth")] { include!("waveshare-esp32-s3-eth.rs"); }
+    else if #[cfg(context = "waveshare-esp32-s3-matrix")] {
     include!("waveshare-esp32-s3-matrix.rs"); } else {}
 }

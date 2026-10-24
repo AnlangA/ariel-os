@@ -25,6 +25,16 @@ builders:
     CARGO_ENV:
     - CONFIG_VBUS_DETECTION=false
     - CONFIG_SWI=WWDG
+- name: art-pi2
+  parent: stm32h7r7l8
+  provides:
+  - has_buttons
+  - has_leds
+  - has_swi
+  env:
+    CARGO_ENV:
+    - CONFIG_SWI=WWDG
+    CONFIG_GPIO_OUTPUTS: PO1:low,PO5:high
 - name: bbc-microbit-v1
   parent: nrf51822-xxaa
   provides:
@@ -215,16 +225,6 @@ builders:
   - has_usb_device_port
   env:
     CHIP_NVM_SIZE_BYTES: $(4096 * 1024)
-- name: rt-thread-art-pi2
-  parent: stm32h7r7l8
-  provides:
-  - has_buttons
-  - has_leds
-  - has_swi
-  env:
-    CARGO_ENV:
-    - CONFIG_SWI=WWDG
-    CONFIG_GPIO_OUTPUTS: PO1:low,PO5:high
 - name: seeedstudio-lora-e5-mini
   parent: stm32wle5jc
   provides:

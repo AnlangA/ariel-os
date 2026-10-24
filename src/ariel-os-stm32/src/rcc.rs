@@ -139,7 +139,7 @@ fn default() -> embassy_stm32::rcc::Config {
         rcc.sys = Sysclk::PLL1_P;
     }
 
-    #[cfg(context = "rt-thread-art-pi2")]
+    #[cfg(context = "art-pi2")]
     {
         // The board uses the internal SMPS to supply VCORE. Keep the default
         // 64 MHz HSI clock for the initial on-chip-flash blinky configuration.

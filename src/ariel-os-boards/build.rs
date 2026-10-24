@@ -8,6 +8,7 @@ pub fn main() {
         "cargo::rustc-check-cfg=cfg(context, values(\"adafruit-feather-nrf52840-sense\"))"
     );
     println!("cargo::rustc-check-cfg=cfg(context, values(\"arduino-uno-q\"))");
+    println!("cargo::rustc-check-cfg=cfg(context, values(\"art-pi2\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"bbc-microbit-v1\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"bbc-microbit-v2\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"decawave-dwm1001-dev\"))");
@@ -66,7 +67,6 @@ pub fn main() {
     println!("cargo::rustc-check-cfg=cfg(context, values(\"rpi-pico\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"rpi-pico2-w\"))");
     println!("cargo::rustc-check-cfg=cfg(context, values(\"rpi-pico2\"))");
-    println!("cargo::rustc-check-cfg=cfg(context, values(\"rt-thread-art-pi2\"))");
     println!(
         "cargo::rustc-check-cfg=cfg(context, values(\"seeedstudio-lora-e5-mini\"))"
     );

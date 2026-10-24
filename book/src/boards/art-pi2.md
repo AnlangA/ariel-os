@@ -1,4 +1,4 @@
-# RT-Thread ART-Pi2
+# ART-Pi2
 
 This initial configuration supports the STM32H7R7L8 Cortex-M7, the board's
 ST-LINK/V2.1 debug interface, and the user LED and button. It uses the default
@@ -7,8 +7,8 @@ ST-LINK/V2.1 debug interface, and the user LED and button. It uses the default
 ## Blinky
 
 ```sh
-laze -C examples/blinky build -b rt-thread-art-pi2
-laze -C examples/blinky build -b rt-thread-art-pi2 run
+laze -C examples/blinky build -b art-pi2
+laze -C examples/blinky build -b art-pi2 run
 ```
 
 Connect the board's ST-LINK USB port. The user LED is a single red/blue package:
