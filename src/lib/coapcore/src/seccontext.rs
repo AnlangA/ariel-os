@@ -626,13 +626,19 @@ impl<
 
             let mut cred_i_and_authorization = None;
 
-            if let Some(lakers::EADItem { label: crate::iana::edhoc_ead::ACETOKEN, value: Some(value), .. }) = ead_3.take() {
+            if let Some(lakers::EADItem {
+                label: crate::iana::edhoc_ead::ACETOKEN,
+                value: Some(value),
+                ..
+            }) = &ead_3
+            {
                 match crate::ace::process_edhoc_token(value.as_slice(), &self.authorities) {
                     Ok(ci_and_a) => cred_i_and_authorization = Some(ci_and_a),
                     Err(e) => {
                         error!("Received unprocessable token {}, error: {:?}", defmt_or_log::wrappers::Cbor(value.as_slice()), Debug2Format(&e));
                     }
                 }
+                ead_3 = None;
             }
 
             if cred_i_and_authorization.is_none() {
