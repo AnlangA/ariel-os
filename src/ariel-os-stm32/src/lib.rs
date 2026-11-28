@@ -117,6 +117,9 @@ fn enable_flash_cache() {
         embassy_stm32::pac::FLASH
             .acr()
             .modify(|w| w.set_icrst(true));
+        embassy_stm32::pac::FLASH
+            .acr()
+            .modify(|w| w.set_icrst(false));
         // enable the instruction cache and prefetch
         embassy_stm32::pac::FLASH.acr().modify(|w| w.set_icen(true));
         embassy_stm32::pac::FLASH
