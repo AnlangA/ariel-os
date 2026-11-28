@@ -2455,6 +2455,8 @@ modules:
       - rp2040
       - stm32u083c-dk
       - st-b-l072z-lrwan1
+      - st-b-l475e-iot01a
+      - st-nucleo-wb55
     selects:
       - log # We could later support defmt as well
     env:
