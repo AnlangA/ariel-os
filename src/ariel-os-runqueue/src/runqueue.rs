@@ -82,8 +82,9 @@ impl<const N_QUEUES: usize, const N_THREADS: usize> RunQueue<{ N_QUEUES }, { N_T
     pub fn add(&mut self, n: ThreadId, rq: RunqueueId) {
         debug_assert!(usize::from(n) < N_THREADS);
         debug_assert!(usize::from(rq) < N_QUEUES);
-        self.bitcache |= 1 << rq.0;
-        self.queues.push(n.0, rq.0);
+        if self.queues.push(n.0, rq.0) {
+            self.bitcache |= 1 << rq.0;
+        }
     }
 
     /// Returns the head of the runqueue without removing it.
@@ -196,7 +197,7 @@ impl<const N_QUEUES: usize, const N_THREADS: usize> RunQueue<{ N_QUEUES }, { N_T
             prev: start.0,
             rq_head: self.queues.peek_head(rq.0),
             // Clear higher priority runqueues.
-            bitcache: self.bitcache % (1 << (rq.0 + 1)),
+            bitcache: self.bitcache & (usize::MAX >> (USIZE_BITS - 1 - usize::from(rq.0))),
             queues: &self.queues,
         }
     }
@@ -283,10 +284,10 @@ mod clist {
         }
 
         #[expect(clippy::missing_panics_doc, reason = "internal")]
-        pub fn push(&mut self, n: u8, rq: u8) {
+        pub fn push(&mut self, n: u8, rq: u8) -> bool {
             assert!(n < Self::sentinel());
             if self.next_idxs[n as usize] != Self::sentinel() {
-                return;
+                return false;
             }
 
             if let Some(head) = self.peek_head(rq) {
@@ -302,6 +303,7 @@ mod clist {
                 self.tail[rq as usize] = n;
                 self.next_idxs[n as usize] = n;
             }
+            true
         }
 
         /// Removes a thread from the list.

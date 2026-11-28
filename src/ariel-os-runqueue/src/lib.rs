@@ -182,4 +182,33 @@ mod tests {
             Some(ThreadId::new(1))
         );
     }
+
+    #[test]
+    fn iter_from_max_priority() {
+        const N_QUEUES: usize = usize::BITS as usize;
+        let max_rq = RunqueueId::new((usize::BITS - 1) as u8);
+        let mut runqueue: RunQueue<N_QUEUES, 32> = RunQueue::new();
+
+        runqueue.add(ThreadId::new(0), RunqueueId::new(0));
+        runqueue.add(ThreadId::new(1), max_rq);
+
+        let (head, rq) = runqueue.get_next_with_rq().unwrap();
+        assert_eq!(head, ThreadId::new(1));
+        assert_eq!(rq, max_rq);
+
+        let mut iter = runqueue.iter_from(head, rq);
+        assert_eq!(iter.next(), Some(ThreadId::new(0)));
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn add_already_queued_does_not_corrupt_bitcache() {
+        let mut runqueue: RunQueue<8, 32> = RunQueue::new();
+
+        runqueue.add(ThreadId::new(0), RunqueueId::new(0));
+        // Thread 0 is already in queue 0, so adding it to queue 2 must be a no-op.
+        runqueue.add(ThreadId::new(0), RunqueueId::new(2));
+
+        assert_eq!(runqueue.get_next(), Some(ThreadId::new(0)));
+    }
 }
