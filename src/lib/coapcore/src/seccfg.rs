@@ -367,11 +367,7 @@ impl ServerSecurityConfig for ConfigBuilder {
             defmt_or_log::wrappers::Cbor(id_cred_x.as_full_value())
         );
 
-        #[expect(
-            clippy::single_element_loop,
-            reason = "Expected to be extended to actual loop soon"
-        )]
-        for (credential, scope) in &[self.known_edhoc_clients.as_ref()?] {
+        if let Some((credential, scope)) = &self.known_edhoc_clients {
             trace!(
                 "Comparing to {}",
                 defmt_or_log::wrappers::Cbor(credential.bytes.as_slice())
