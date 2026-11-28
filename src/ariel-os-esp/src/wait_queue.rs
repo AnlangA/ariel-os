@@ -16,8 +16,8 @@ impl ArielWaitQueue {
             inner: WaitQueue::new(),
         }
     }
-    fn from_ptr(ptr: WaitQueuePtr) -> &'static mut ArielWaitQueue {
-        unsafe { &mut *(ptr.cast::<ArielWaitQueue>().as_ptr()) }
+    unsafe fn from_ptr<'a>(ptr: WaitQueuePtr) -> &'a Self {
+        unsafe { ptr.cast::<Self>().as_ref() }
     }
 }
 
@@ -34,7 +34,8 @@ impl WaitQueueImplementation for ArielWaitQueue {
     }
 
     unsafe fn wait_until(queue: WaitQueuePtr, deadline_instant: Option<u64>) {
-        let queue = ArielWaitQueue::from_ptr(queue);
+        // SAFETY: `queue` is a valid pointer returned by `create()` and outlives this call.
+        let queue = unsafe { ArielWaitQueue::from_ptr(queue) };
         if let Some(micros) = deadline_instant {
             queue
                 .inner
@@ -45,12 +46,14 @@ impl WaitQueueImplementation for ArielWaitQueue {
     }
 
     unsafe fn notify(queue: WaitQueuePtr) {
-        let queue = ArielWaitQueue::from_ptr(queue);
+        // SAFETY: `queue` is a valid pointer returned by `create()` and outlives this call.
+        let queue = unsafe { ArielWaitQueue::from_ptr(queue) };
         queue.inner.notify_one();
     }
 
     unsafe fn notify_from_isr(queue: WaitQueuePtr, _higher_prio_task_waken: Option<&mut bool>) {
-        let queue = ArielWaitQueue::from_ptr(queue);
+        // SAFETY: `queue` is a valid pointer returned by `create()` and outlives this call.
+        let queue = unsafe { ArielWaitQueue::from_ptr(queue) };
         queue.inner.notify_one();
     }
 }
