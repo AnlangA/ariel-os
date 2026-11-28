@@ -620,7 +620,7 @@ unsafe impl<T: Sync + Sized> Arguable for &'static T {
     fn into_arg(self) -> usize {
         // Ensure that a pointer does fit into a single machine word.
         const {
-            assert!(size_of::<*const T>() == size_of::<u32>());
+            assert!(size_of::<*const T>() == size_of::<usize>());
         }
         core::ptr::from_ref::<T>(self) as usize
     }
