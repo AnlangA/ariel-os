@@ -161,7 +161,7 @@ macro_rules! define_env_macro {
                                 "=",
                                 str_value,
                                 "` as ",
-                                "a bool",
+                                $output_type_name,
                             );
                         }
                     } else {
