@@ -99,11 +99,10 @@ impl AifValue {
 impl Scope for AifValue {
     fn request_is_allowed<M: ReadableMessage>(&self, request: &M) -> bool {
         let code: u8 = request.code().into();
-        let (codebit, false) = 1u32.overflowing_shl(
-            u32::from(code)
-                .checked_sub(1)
-                .expect("Request codes are != 0"),
-        ) else {
+        let Some(shift) = u32::from(code).checked_sub(1) else {
+            return false;
+        };
+        let (codebit, false) = 1u32.overflowing_shl(shift) else {
             return false;
         };
         let mut decoder = minicbor::Decoder::new(&self.0);
