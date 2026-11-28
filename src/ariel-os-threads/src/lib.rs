@@ -208,6 +208,7 @@ impl Scheduler {
         _core_affinity: Option<CoreAffinity>,
     ) -> Option<ThreadId> {
         let (thread, tid) = self.get_unused()?;
+        *thread = Thread::default();
         thread.prio = prio;
         thread.tid = tid;
         thread.state = ThreadState::Parked;
