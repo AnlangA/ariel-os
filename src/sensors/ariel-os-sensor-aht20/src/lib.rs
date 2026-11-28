@@ -84,9 +84,9 @@ fn t_accuracy(temp: i32) -> SampleMetadata {
             scaling: -1,
         }
     }
-    // Otherwise we are outstide of the scope of work of the sensor
+    // Otherwise we are outside of the scope of work of the sensor
     else {
-        unreachable!("We are outside of the working conditions of this sensor");
+        SampleMetadata::UnknownAccuracy
     }
 }
 
@@ -128,4 +128,15 @@ fn calculate_crc(data: &[u8]) -> u8 {
 /// Checks that the data leads to the expected crc.
 fn check_crc(data: &[u8], expected_crc: u8) -> bool {
     calculate_crc(data) == expected_crc
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn t_accuracy_out_of_range() {
+        assert_eq!(t_accuracy(-410), SampleMetadata::UnknownAccuracy);
+        assert_eq!(t_accuracy(860), SampleMetadata::UnknownAccuracy);
+    }
 }

@@ -280,7 +280,11 @@ impl<I2C: Send> Sensor for Aht20<I2C> {
     }
 
     fn categories(&self) -> &'static [Category] {
-        &[Category::RelativeHumidityTemperature]
+        &[
+            Category::RelativeHumidity,
+            Category::Temperature,
+            Category::RelativeHumidityTemperature,
+        ]
     }
 
     fn reading_channels(&self) -> ReadingChannels {
@@ -393,7 +397,7 @@ mod tests {
                             // Temperature bits 8..
                             rbuf[5] = (samples.1 % (1 << 8)) as u8;
                             // CRC
-                            rbuf[5] = calculate_crc(&rbuf[..5]);
+                            rbuf[6] = calculate_crc(&rbuf[..6]);
                             self.reading_count += 1;
                             self.reading_status = false;
                         }
