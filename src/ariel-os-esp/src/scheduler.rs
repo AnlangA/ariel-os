@@ -3,7 +3,7 @@
 
 #![expect(unsafe_code)]
 
-use alloc::alloc::{Layout, alloc, handle_alloc_error};
+use alloc::alloc::{Layout, alloc_zeroed, handle_alloc_error};
 use core::{
     ffi::c_void,
     ptr::NonNull,
@@ -36,8 +36,8 @@ fn thread_ptr_to_id(thread_ptr: ThreadPtr) -> ThreadId {
 pub fn alloc_aligned_leaked_buffer(len: usize, align: usize) -> &'static mut [u8] {
     let layout = Layout::from_size_align(len, align).unwrap();
 
-    // Allocate raw memory (uninitialized)
-    let ptr = unsafe { alloc(layout) };
+    // Allocate zero-initialized memory
+    let ptr = unsafe { alloc_zeroed(layout) };
     if ptr.is_null() {
         handle_alloc_error(layout);
     }
