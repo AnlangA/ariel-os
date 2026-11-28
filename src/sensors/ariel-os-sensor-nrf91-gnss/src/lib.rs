@@ -244,9 +244,9 @@ impl Nrf91Gnss {
         let configuration = self.config.get().await;
 
         loop {
-            // Wait until the state is Enabled.
+            // Wait until the state is Enabled (or already Measuring).
             // `set_mode` updates `self.state` before sending a start command in `command_channel`.
-            if self.state.get() != State::Enabled
+            if !matches!(self.state.get(), State::Enabled | State::Measuring)
                 && self.command_channel.receive().await != Command::Start
             {
                 continue;
@@ -464,12 +464,13 @@ impl Sensor for Nrf91Gnss {
         // Clear the last value if there was one.
         self.result_signal.clear();
         match self.state.get() {
-            State::Measuring => {
-                warn!("GNSS: already measuring");
-            }
-            State::Enabled => {
-                // Mark as measuring so we don't trigger twice.
-                self.state.set(State::Measuring);
+            state @ (State::Enabled | State::Measuring) => {
+                if state == State::Enabled {
+                    // Mark as measuring so we don't trigger twice.
+                    self.state.set(State::Measuring);
+                } else {
+                    warn!("GNSS: already measuring");
+                }
 
                 if let Err(e) = self.command_channel.try_send(Command::Trigger) {
                     error!("Couldn't send trigger command: {:?} ", Debug2Format(&e));
