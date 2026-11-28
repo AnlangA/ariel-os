@@ -20,7 +20,7 @@ static VTABLE: RawWakerVTable = RawWakerVTable::new(
     |ptr| RawWaker::new(ptr, &VTABLE),
     wake,
     wake,
-    wake,
+    |_ptr| {},
 );
 
 /// Runs a future to completion.
