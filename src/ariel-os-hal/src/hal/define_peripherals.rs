@@ -488,21 +488,18 @@ macro_rules! define_switch {
                 use $crate::gpio::Pull::*;
                 use $crate::gpio::Level::*;
 
-                $ (
-                    let input_builder_$pin = $crate::gpio::Input::builder(
-                        self.$pin.take().unwrap(),
-                        $crate::select_pull!($pull, $active),
-                    );
-                )+
-
                 $name {
                     $(
-                        $pin: $crate::hal::switch::SwitchPin::new(
-                            inner: $crate::hal::switch::SwitchPin::new(
-                                $crate::build_input!(input_builder_$pin),
+                        $pin: {
+                            let input_builder = $crate::gpio::Input::builder(
+                                self.$pin.take().unwrap(),
+                                $crate::select_pull!($pull, $active),
+                            );
+                            $crate::hal::switch::SwitchPin::new(
+                                $crate::build_input!(input_builder),
                                 $active,
                             )
-                        ),
+                        },
                     )+
                 }
             }
