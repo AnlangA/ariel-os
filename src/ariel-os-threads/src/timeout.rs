@@ -23,7 +23,7 @@ fn wake(ptr: *const ()) {
                 scheduler.threads[usize::from(thread_id)].deadline = None;
                 scheduler.flag_set(thread_id, THREAD_FLAG_TIMEOUT);
                 match scheduler.get_state(thread_id) {
-                    Some(ThreadState::Running) => {}
+                    Some(ThreadState::Running) | None => {}
                     _ => {
                         scheduler.set_state(thread_id, ThreadState::Running);
                     }
@@ -212,9 +212,17 @@ pub fn sleep(duration: Duration) {
 /// Put the current thread to sleep until the given deadline.
 pub fn sleep_until(deadline: embassy_time::Instant) {
     let deadline = deadline.as_ticks();
-    critical_section::with(|cs: CriticalSection<'_>| {
+    let parked = critical_section::with(|cs: CriticalSection<'_>| {
         if set_deadline(cs, deadline) {
             crate::park();
+            true
+        } else {
+            false
         }
     });
+    if parked {
+        critical_section::with(|cs| {
+            clear_deadline(cs);
+        });
+    }
 }
