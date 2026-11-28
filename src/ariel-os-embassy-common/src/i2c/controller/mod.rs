@@ -181,7 +181,7 @@ macro_rules! handle_i2c_timeout_res {
             // `from_error` is defined in each HAL
             op.map_err(from_error)
         } else {
-            Err($crate::i2c::controller::Error::NoAcknowledge($crate::i2c::controller::NoAcknowledgeSource::Unknown))
+            Err($crate::i2c::controller::Error::Timeout)
         }
     }}
 }
