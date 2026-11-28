@@ -195,8 +195,8 @@ macro_rules! define_uart_drivers {
                 pub fn new<RX: RxPin<peripherals::$peripheral>, TX: TxPin<peripherals::$peripheral>>(
                     rx_pin: impl $crate::IntoPeripheral<'d, RX>,
                     tx_pin: impl $crate::IntoPeripheral<'d, TX>,
-                    rx_buf: &mut [u8],
-                    tx_buf: &mut [u8],
+                    rx_buf: &'d mut [u8],
+                    tx_buf: &'d mut [u8],
                     config: Config,
                 ) -> Result<Uart<'d>, ConfigError> {
                     let mut uart_config = embassy_rp::uart::Config::default();
