@@ -135,7 +135,7 @@ pub(crate) unsafe fn with_deadline(
     }) && critical_section::with(|cs| {
         if clear_deadline(cs) {
             trace!("with_deadline: cleared deadline {}", deadline);
-            false
+            true
         } else {
             trace!("with_deadline: timeout deadline {}", deadline);
             on_timeout(cs)
