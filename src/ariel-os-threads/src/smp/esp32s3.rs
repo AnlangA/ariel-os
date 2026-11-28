@@ -69,8 +69,8 @@ impl Multicore for Chip {
         // SAFETY: `steal().raise()` is safe on an initialized software interrupt
         unsafe {
             match id {
-                0 => SoftwareInterrupt::<0>::steal().reset(),
-                1 => SoftwareInterrupt::<1>::steal().reset(),
+                0 => SoftwareInterrupt::<0>::steal().raise(),
+                1 => SoftwareInterrupt::<1>::steal().raise(),
                 _ => unreachable!(),
             }
         }
