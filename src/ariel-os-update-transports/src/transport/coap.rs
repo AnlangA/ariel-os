@@ -36,7 +36,7 @@ pub(crate) async fn new_client<'uri, 'buf, DNS: Dns, const N: usize>(
     };
 
     match uri.scheme() {
-        UrlScheme::CoAP | UrlScheme::CoAPS => {}
+        UrlScheme::CoAP => {}
         _ => return Err(Error::InvalidUri),
     }
 
@@ -170,6 +170,12 @@ impl<'buf, const N: usize> coap_request::Request<RequestingCoAPClient<'static, C
         _carry: Self::Carry,
     ) -> impl Future<Output = Self::Output> {
         use coap_message::ReadableMessage as _;
+
+        let code: u8 = response.code().into();
+        if code != coap_numbers::code::CONTENT {
+            error!("Unexpected CoAP response code: {}", code);
+            return core::future::ready(None);
+        }
 
         let mut block2: Option<Block2ResponseData> = None;
         if response
