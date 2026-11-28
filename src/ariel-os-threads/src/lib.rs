@@ -277,7 +277,7 @@ impl Scheduler {
         let thread = self.get_unchecked_mut(tid);
         let old_state = core::mem::replace(&mut thread.state, state);
         let prio = thread.prio;
-        if state == ThreadState::Running {
+        if state == ThreadState::Running && old_state != ThreadState::Running {
             #[cfg(not(feature = "infini-core"))]
             self.runqueue.add(tid, prio);
             self.schedule_if_higher_prio(tid, prio);
