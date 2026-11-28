@@ -38,7 +38,6 @@ pub(crate) fn write_bytes(bytes: &[u8]) {
 }
 
 #[allow(unused, reason = "conditional compilation")]
-#[cfg(feature = "defmt")]
 // Flush the data in the transport if available.
 pub(crate) fn flush() {
     if let Some(flush_fn) = TRANSPORT_FLUSH_FN.try_get() {

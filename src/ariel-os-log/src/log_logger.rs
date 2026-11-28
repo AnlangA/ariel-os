@@ -75,5 +75,11 @@ impl log::Log for DebugLogger {
         }
     }
 
-    fn flush(&self) {}
+    fn flush(&self) {
+        #[cfg(any(
+            feature = "internal-transport-driver",
+            feature = "custom-transport-driver"
+        ))]
+        crate::transport::flush();
+    }
 }
